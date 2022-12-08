@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
+</head>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+in vec2 aTexCoord;
+out vec2 vTexCoord;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+void main()
+{	
+	vTexCoord = aTexCoord;
+    gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+
+precision mediump float;
+
+out vec4 fColor;
+in vec2 vTexCoord;
+uniform sampler2D uFurTextureMap;
+uniform sampler2D uFoliageTextureMap;
+uniform sampler2D uTreeTextureMap;
+uniform sampler2D uHeadTextureMap;
+
+uniform bool bTreeTexture;
+uniform bool bFoliageTexture;
+uniform bool bHeadTexture;
+
+
+void main()
+{
+	if(bTreeTexture)
+		fColor = texture(uTreeTextureMap, vTexCoord);
+	else if(bFoliageTexture)
+		fColor = texture(uFoliageTextureMap, vTexCoord);
+	else if(bHeadTexture)
+		fColor = texture(uHeadTextureMap, vTexCoord);
+	else
+		fColor = texture(uFurTextureMap, vTexCoord);
+    fColor.a = 1.0;
+}
+</script>
+
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Homework2.js"></script>
+
+
+<button id = "Button0">StartAnimation</button>
+
+<table>
+<tr>
+
+<td>
+<body>
+<canvas id="gl-canvas" width="1280" height="720">
+Oops ... your browser doesn't support the HTML5 canvas element
+Paolo Tarantino 1666228
+</canvas>
+</td>
+
+<img id = "texImage1" src = "fur.jpg" hidden></img>
+<img id = "texImage4" src = "head.jpg" hidden></img>
+<img id = "texImage2" src = "pine.jpg" hidden></img>
+<img id = "texImage3" src = "tree.jpg" hidden></img>
+</body>
+</html>
